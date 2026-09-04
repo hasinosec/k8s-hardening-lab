@@ -1,0 +1,22 @@
+
+Applying 15 policy rule(s) to 2 resource(s)...
+policy disallow-hostpath -> resource demo/Deployment/demo-insecure failed:
+1 - autogen-host-path-not-allowed validation error: hostPath volumes are not allowed — they let a pod read/write the node's filesystem. rule autogen-host-path-not-allowed failed at path /spec/template/spec/volumes/0/hostPath/
+policy disallow-latest-tag -> resource demo/Deployment/demo-insecure failed:
+1 - autogen-require-image-tag validation failure: Images must not use the ':latest' tag (or no tag at all) — pin an explicit version.
+policy disallow-privileged-containers -> resource demo/Deployment/demo-insecure failed:
+1 - autogen-privileged-containers-are-disallowed validation error: Privileged containers are not allowed. rule autogen-privileged-containers-are-disallowed failed at path /spec/template/spec/containers/0/securityContext/privileged/
+policy require-resource-limits -> resource demo/Deployment/demo-insecure failed:
+1 - autogen-validate-resources validation error: CPU and memory requests and limits are required on every container. rule autogen-validate-resources failed at path /spec/template/spec/containers/0/resources/
+policy require-run-as-nonroot -> resource demo/Deployment/demo-insecure failed:
+1 - autogen-check-runasnonroot validation error: Running as root is not allowed. Set runAsNonRoot: true. rule autogen-check-runasnonroot[0] failed at path /spec/template/spec/securityContext/ rule autogen-check-runasnonroot[1] failed at path /spec/template/spec/containers/0/securityContext/runAsNonRoot/
+policy disallow-latest-tag -> resource demo/Pod/demo-insecure-pod failed:
+1 - require-image-tag validation failure: Images must not use the ':latest' tag (or no tag at all) — pin an explicit version.
+policy disallow-privileged-containers -> resource demo/Pod/demo-insecure-pod failed:
+1 - privileged-containers-are-disallowed validation error: Privileged containers are not allowed. rule privileged-containers-are-disallowed failed at path /spec/containers/0/securityContext/privileged/
+policy require-resource-limits -> resource demo/Pod/demo-insecure-pod failed:
+1 - validate-resources validation error: CPU and memory requests and limits are required on every container. rule validate-resources failed at path /spec/containers/0/resources/
+policy require-run-as-nonroot -> resource demo/Pod/demo-insecure-pod failed:
+1 - check-runasnonroot validation error: Running as root is not allowed. Set runAsNonRoot: true. rule check-runasnonroot[0] failed at path /spec/securityContext/ rule check-runasnonroot[1] failed at path /spec/containers/0/securityContext/runAsNonRoot/
+
+pass: 1, fail: 9, warn: 0, error: 0, skip: 0 

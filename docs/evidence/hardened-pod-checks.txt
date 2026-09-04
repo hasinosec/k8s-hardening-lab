@@ -1,0 +1,6 @@
+$ kubectl exec -n demo demo-hardened-df455dcbc-9l25k -- id
+uid=101(nginx) gid=101(nginx) groups=101(nginx)
+
+$ kubectl exec ... -- touch /shouldfail
+touch: /shouldfail: Read-only file system
+command terminated with exit code 1

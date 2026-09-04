@@ -1,0 +1,44 @@
+# Deliberately insecure — kept for comparison, never intended to run in a
+# real cluster. See ../hardened/deployment.yaml for the fix.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-insecure
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: demo-insecure }
+  template:
+    metadata:
+      labels: { app: demo-insecure }
+    spec:
+      containers:
+        - name: demo
+          image: nginx:latest
+          securityContext:
+            privileged: true
+            runAsUser: 0
+            allowPrivilegeEscalation: true
+          # no resource requests/limits
+          # no readOnlyRootFilesystem
+          volumeMounts:
+            - name: host-root
+              mountPath: /host
+      volumes:
+        - name: host-root
+          hostPath:
+            path: /
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-insecure-pod
+  namespace: demo
+  labels: { app: demo-insecure }
+spec:
+  containers:
+    - name: demo
+      image: nginx:latest
+      securityContext:
+        privileged: true
