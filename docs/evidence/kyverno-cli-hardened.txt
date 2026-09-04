@@ -1,0 +1,4 @@
+
+Applying 15 policy rule(s) to 1 resource(s)...
+
+pass: 5, fail: 0, warn: 0, error: 0, skip: 0 

@@ -1,0 +1,28 @@
+Error from server: error when creating "STDIN": admission webhook "validate.kyverno.svc-fail" denied the request: 
+
+resource Deployment/kyverno-test/demo-insecure was blocked due to the following policies 
+
+disallow-hostpath:
+  autogen-host-path-not-allowed: 'validation error: hostPath volumes are not allowed — they let a pod read/write the node''s filesystem. rule autogen-host-path-not-allowed failed at path /spec/template/spec/volumes/0/hostPath/'
+disallow-latest-tag:
+  autogen-require-image-tag: 'validation failure: Images must not use the '':latest'' tag (or no tag at all) — pin an explicit version.'
+disallow-privileged-containers:
+  autogen-privileged-containers-are-disallowed: 'validation error: Privileged containers are not allowed. rule autogen-privileged-containers-are-disallowed failed at path /spec/template/spec/containers/0/securityContext/privileged/'
+require-resource-limits:
+  autogen-validate-resources: 'validation error: CPU and memory requests and limits are required on every container. rule autogen-validate-resources failed at path /spec/template/spec/containers/0/resources/limits/'
+require-run-as-nonroot:
+  autogen-check-runasnonroot: 'validation error: Running as root is not allowed. Set runAsNonRoot: true. rule autogen-check-runasnonroot[0] failed at path /spec/template/spec/securityContext/runAsNonRoot/ rule autogen-check-runasnonroot[1] failed at path /spec/template/spec/containers/0/securityContext/runAsNonRoot/'
+
+Error from server: error when creating "STDIN": admission webhook "validate.kyverno.svc-fail" denied the request: 
+
+resource Pod/kyverno-test/demo-insecure-pod was blocked due to the following policies 
+
+disallow-latest-tag:
+  require-image-tag: 'validation failure: Images must not use the '':latest'' tag (or no tag at all) — pin an explicit version.'
+disallow-privileged-containers:
+  privileged-containers-are-disallowed: 'validation error: Privileged containers are not allowed. rule privileged-containers-are-disallowed failed at path /spec/containers/0/securityContext/privileged/'
+require-resource-limits:
+  validate-resources: 'validation error: CPU and memory requests and limits are required on every container. rule validate-resources failed at path /spec/containers/0/resources/limits/'
+require-run-as-nonroot:
+  check-runasnonroot: 'validation error: Running as root is not allowed. Set runAsNonRoot: true. rule check-runasnonroot[0] failed at path /spec/securityContext/runAsNonRoot/ rule check-runasnonroot[1] failed at path /spec/containers/0/securityContext/runAsNonRoot/'
+

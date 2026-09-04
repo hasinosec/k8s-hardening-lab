@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  policy-test:
+    name: Kyverno policy test (no cluster needed)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Kyverno CLI
+        run: |
+          VERSION=$(curl -sL https://api.github.com/repos/kyverno/kyverno/releases/latest | grep '"tag_name"' | cut -d '"' -f4)
+          curl -sL -o kyverno.tar.gz "https://github.com/kyverno/kyverno/releases/download/${VERSION}/kyverno-cli_${VERSION}_linux_x86_64.tar.gz"
+          tar -xzf kyverno.tar.gz
+          sudo mv kyverno /usr/local/bin/kyverno
+          kyverno version
+      - name: Confirm insecure manifests are REJECTED by policy
+        run: |
+          set -e
+          if kyverno apply policies/ --resource manifests/insecure/deployment.yaml; then
+            echo "::error::insecure manifests should have failed policy, but passed"
+            exit 1
+          fi
+          echo "Confirmed: insecure manifests are blocked, as expected."
+      - name: Confirm hardened manifests PASS policy
+        run: kyverno apply policies/ --resource manifests/hardened/deployment.yaml

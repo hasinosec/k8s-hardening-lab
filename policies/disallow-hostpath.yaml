@@ -1,0 +1,23 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-hostpath
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: host-path-not-allowed
+      match:
+        any:
+          - resources:
+              kinds: ["Pod"]
+      exclude:
+        any:
+          - resources:
+              namespaces: ["kube-system"]
+      validate:
+        message: "hostPath volumes are not allowed — they let a pod read/write the node's filesystem."
+        pattern:
+          spec:
+            =(volumes):
+              - X(hostPath): "null"
